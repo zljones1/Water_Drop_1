@@ -32,6 +32,10 @@ function resetGame() {
   if (animationId !== null) {
     cancelAnimationFrame(animationId);
   }
+  if (activePointerId !== null && canvas.hasPointerCapture(activePointerId)) {
+    canvas.releasePointerCapture(activePointerId);
+  }
+  activePointerId = null;
   clearDirection();
   drops = [];
   score = 0;
@@ -40,6 +44,7 @@ function resetGame() {
   dropTimer = 0;
   spawnEvery = 900;
   player.x = canvas.width / 2 - player.width / 2;
+  lastFrame = performance.now();
   setFeedback('Collect clean drops. Avoid dark pollutant drops!');
   updateHud();
   animationId = requestAnimationFrame(loop);
@@ -214,6 +219,9 @@ window.addEventListener('keyup', handleKeyUp);
 
 canvas.addEventListener('pointerdown', (e) => {
   canvas.focus();
+  if (activePointerId !== null && canvas.hasPointerCapture(activePointerId)) {
+    canvas.releasePointerCapture(activePointerId);
+  }
   activePointerId = e.pointerId;
   canvas.setPointerCapture(e.pointerId);
   setDirectionFromPointer(e.clientX);
@@ -240,8 +248,6 @@ function releasePointerCapture() {
 
 canvas.addEventListener('pointerup', releasePointerCapture);
 canvas.addEventListener('pointercancel', releasePointerCapture);
-window.addEventListener('pointerup', clearDirection);
-window.addEventListener('pointercancel', clearDirection);
 
 function bindHoldButton(button, onStart) {
   button.addEventListener('pointerdown', () => {
@@ -278,7 +284,6 @@ bindHoldButton(rightBtn, () => {
 });
 
 startBtn.addEventListener('click', () => {
-  lastFrame = performance.now();
   canvas.focus();
   resetGame();
 });
