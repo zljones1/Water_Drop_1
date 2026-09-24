@@ -59,8 +59,10 @@ function resetGame() {
   spawnEvery = 900;
   player.x = canvas.width / 2 - player.width / 2;
   lastFrame = performance.now();
+  spawnDrop();
   setFeedback('Collect clean drops. Avoid dark pollutant drops!');
   updateHud();
+  render();
   animationId = requestAnimationFrame(loop);
 }
 
@@ -148,10 +150,24 @@ function updateDrops(delta) {
 function drawPlayer() {
   ctx.fillStyle = '#f09d9d';
   ctx.fillRect(player.x + 10, player.y + 15, 20, 35);
+  ctx.strokeStyle = '#513737';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(player.x + 10, player.y + 15, 20, 35);
+
   ctx.beginPath();
   ctx.arc(player.x + 20, player.y + 10, 10, 0, Math.PI * 2);
   ctx.fillStyle = '#f7c8b8';
   ctx.fill();
+  ctx.stroke();
+
+  // Simple wireframe bucket in front of player for clearer game visuals.
+  ctx.fillStyle = '#d6d6d6';
+  ctx.fillRect(player.x + 4, player.y + 36, 32, 16);
+  ctx.strokeStyle = '#5f6a72';
+  ctx.strokeRect(player.x + 4, player.y + 36, 32, 16);
+  ctx.beginPath();
+  ctx.arc(player.x + 20, player.y + 36, 14, Math.PI, 0);
+  ctx.stroke();
 }
 
 function drawDrops() {
@@ -160,6 +176,9 @@ function drawDrops() {
     ctx.arc(d.x, d.y, d.radius, 0, Math.PI * 2);
     ctx.fillStyle = d.bad ? '#5f6a72' : '#45a6ff';
     ctx.fill();
+    ctx.strokeStyle = d.bad ? '#2f3a40' : '#2f6aa6';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
   }
 }
 
