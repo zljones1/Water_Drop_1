@@ -1,0 +1,108 @@
+:root {
+  color-scheme: light;
+  font-family: Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f4fbff;
+  color: #123;
+}
+
+.app {
+  max-width: 840px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hud h1 {
+  margin: 0;
+}
+
+.stats {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 10px 0 14px;
+}
+
+#startButton {
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  background: #1457ff;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#startButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+#message {
+  margin: 0;
+  min-height: 1.2rem;
+  font-weight: 600;
+}
+
+.game-area {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 420px;
+  border: 2px solid #2f5e95;
+  border-radius: 10px;
+  overflow: hidden;
+  background: linear-gradient(#def4ff, #b7e6ff);
+}
+
+.drop {
+  position: absolute;
+  width: 34px;
+  height: 42px;
+  border-radius: 50% 50% 55% 55%;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.drop.good {
+  background: radial-gradient(circle at 35% 28%, #c8f2ff, #1d98eb);
+  border: 1px solid #0f72b8;
+}
+
+.drop.bad {
+  background: radial-gradient(circle at 35% 28%, #f4d0a8, #8f5b2e);
+  border: 1px solid #6f421b;
+}
+
+@media (max-width: 700px) {
+  .game-area {
+    min-height: 340px;
+  }
+
+  .controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

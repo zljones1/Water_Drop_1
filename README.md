@@ -1,2 +1,17 @@
 # Water_Drop_1
-Water Drop: In this game, users collect as many falling water drops as possible while avoiding pollutants (bad drops). Users tap to collect drops before they hit the ground. Include a score counter, feedback messages, and penalties for “bad drops” to make it more engaging. 
+
+Water Drop is a wireframe browser game prototype where you collect clean water drops and avoid pollutant drops.
+
+## Prototype Features
+- Falling clean and pollutant drops
+- Score tracking
+- Life system with penalties for mistakes
+- 60-second round timer
+- Feedback messages for player actions
+- Restart button after game over/time up
+
+## Run Locally
+1. Open a terminal in the repository root: `/home/runner/work/Water_Drop_1/Water_Drop_1`
+2. Start a local server:
+   - `python -m http.server 8000`
+3. Open `http://localhost:8000` in your browser.

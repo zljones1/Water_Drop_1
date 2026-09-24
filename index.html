@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Water Drop Prototype</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="hud">
+        <h1>Water Drop</h1>
+        <div class="stats">
+          <span>Score: <strong id="score">0</strong></span>
+          <span>Lives: <strong id="lives">3</strong></span>
+          <span>Time: <strong id="time">60</strong>s</span>
+        </div>
+      </header>
+
+      <section class="controls">
+        <button id="startButton" type="button">Start Game</button>
+        <p id="message" aria-live="polite">Tap Start to begin.</p>
+      </section>
+
+      <section id="gameArea" class="game-area" aria-label="Game area"></section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
