@@ -239,7 +239,13 @@ canvas.addEventListener('pointerdown', (e) => {
   canvas.focus();
   clearActivePointerCapture();
   activePointerId = e.pointerId;
-  canvas.setPointerCapture(e.pointerId);
+  try {
+    canvas.setPointerCapture(e.pointerId);
+  } catch {
+    activePointerId = null;
+    clearDirection();
+    return;
+  }
   setDirectionFromPointer(e.clientX);
 });
 
@@ -261,11 +267,19 @@ canvas.addEventListener('pointerup', releasePointerCapture);
 canvas.addEventListener('pointercancel', releasePointerCapture);
 
 function bindHoldButton(button, onStart) {
+  let activeButtonPointerId = null;
+
   button.addEventListener('pointerdown', (e) => {
     if (e.button !== 0 || !e.isPrimary) {
       return;
     }
     canvas.focus();
+    activeButtonPointerId = e.pointerId;
+    try {
+      button.setPointerCapture(e.pointerId);
+    } catch {
+      activeButtonPointerId = null;
+    }
     onStart();
   });
   button.addEventListener('keydown', (e) => {
@@ -276,9 +290,26 @@ function bindHoldButton(button, onStart) {
     }
   });
   const stop = () => clearDirection();
-  button.addEventListener('pointerup', stop);
-  button.addEventListener('pointercancel', stop);
-  button.addEventListener('pointerleave', stop);
+  button.addEventListener('pointerup', (e) => {
+    if (e.pointerId !== activeButtonPointerId) return;
+    try {
+      if (button.hasPointerCapture(activeButtonPointerId)) {
+        button.releasePointerCapture(activeButtonPointerId);
+      }
+    } catch {}
+    activeButtonPointerId = null;
+    stop();
+  });
+  button.addEventListener('pointercancel', (e) => {
+    if (e.pointerId !== activeButtonPointerId) return;
+    try {
+      if (button.hasPointerCapture(activeButtonPointerId)) {
+        button.releasePointerCapture(activeButtonPointerId);
+      }
+    } catch {}
+    activeButtonPointerId = null;
+    stop();
+  });
   button.addEventListener('keyup', (e) => {
     if (e.key === ' ' || e.key === 'Enter') {
       stop();
