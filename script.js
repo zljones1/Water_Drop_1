@@ -15,6 +15,7 @@ if (!canvas || !ctx || !scoreEl || !livesEl || !feedbackEl || !restartBtn) {
   let lives = 5;
   let spawnTimerMs = 0;
   let lastFrameTime = null;
+  let animationFrameId = null;
   let gameOver = false;
   let aim = { x: canvas.width / 2, y: canvas.height - 80 };
 
@@ -33,6 +34,7 @@ if (!canvas || !ctx || !scoreEl || !livesEl || !feedbackEl || !restartBtn) {
     scoreEl.textContent = score;
     livesEl.textContent = lives;
     setFeedback("Tap/click good drops. Use arrow keys + Enter on the canvas for keyboard play.");
+    startLoop();
   }
 
   function spawnDrop() {
@@ -108,7 +110,14 @@ if (!canvas || !ctx || !scoreEl || !livesEl || !feedbackEl || !restartBtn) {
       updateDrops();
     }
     drawScene();
-    requestAnimationFrame(tick);
+    animationFrameId = requestAnimationFrame(tick);
+  }
+
+  function startLoop() {
+    if (animationFrameId !== null) {
+      cancelAnimationFrame(animationFrameId);
+    }
+    animationFrameId = requestAnimationFrame(tick);
   }
 
   function tryTapAt(x, y) {
@@ -168,8 +177,6 @@ if (!canvas || !ctx || !scoreEl || !livesEl || !feedbackEl || !restartBtn) {
         break;
       case "Enter":
       case " ":
-      case "Space":
-      case "Spacebar":
         tryTapAt(aim.x, aim.y);
         event.preventDefault();
         break;
@@ -183,5 +190,4 @@ if (!canvas || !ctx || !scoreEl || !livesEl || !feedbackEl || !restartBtn) {
   canvas.addEventListener("keydown", handleKeydown);
 
   resetGame();
-  requestAnimationFrame(tick);
 }
