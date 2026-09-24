@@ -12,6 +12,8 @@ const BAD_DROP_CHANCE = 0.25;
 const BAD_SCORE_PENALTY = 2;
 const DROP_MIN_SPEED = 120;
 const DROP_SPEED_RANGE = 140;
+const SPAWN_INTERVAL_SECONDS = SPAWN_INTERVAL_MS / 1000;
+const MAX_FRAME_DELTA_SECONDS = 0.1;
 
 const game = {
   score: 0,
@@ -23,6 +25,8 @@ const game = {
   tickTimer: null,
   animationId: null,
   lastFrame: 0,
+  elapsedTime: 0,
+  spawnElapsed: 0,
 };
 
 function setMessage(text) {
@@ -127,12 +131,28 @@ function loop(timestamp) {
     return;
   }
 
-  if (!game.lastFrame) {
-    game.lastFrame = timestamp;
+  const rawDeltaSeconds = (timestamp - game.lastFrame) / 1000;
+  const deltaSeconds = Math.min(rawDeltaSeconds, MAX_FRAME_DELTA_SECONDS);
+  game.lastFrame = timestamp;
+
+  game.elapsedTime += deltaSeconds;
+  game.spawnElapsed += deltaSeconds;
+
+  while (game.spawnElapsed >= SPAWN_INTERVAL_SECONDS) {
+    createDrop();
+    game.spawnElapsed -= SPAWN_INTERVAL_SECONDS;
   }
 
-  const deltaSeconds = (timestamp - game.lastFrame) / 1000;
-  game.lastFrame = timestamp;
+  const nextTimeLeft = Math.max(0, Math.ceil(ROUND_SECONDS - game.elapsedTime));
+  if (nextTimeLeft !== game.timeLeft) {
+    game.timeLeft = nextTimeLeft;
+    updateHud();
+  }
+
+  if (game.elapsedTime >= ROUND_SECONDS) {
+    endGame('Time is up!');
+    return;
+  }
 
   updateDrops(deltaSeconds);
   game.animationId = requestAnimationFrame(loop);
@@ -164,29 +184,14 @@ function startGame() {
   game.timeLeft = ROUND_SECONDS;
   game.active = true;
   game.lastFrame = performance.now();
+  game.elapsedTime = 0;
+  game.spawnElapsed = 0;
 
   clearAllDrops();
   updateHud();
   setMessage('Catch clean drops. Avoid brown pollutant drops!');
 
   startButton.disabled = true;
-
-  game.spawnTimer = setInterval(createDrop, SPAWN_INTERVAL_MS);
-  game.tickTimer = setInterval(() => {
-    if (!game.active) {
-      return;
-    }
-
-    game.timeLeft -= 1;
-    if (game.timeLeft <= 0) {
-      game.timeLeft = 0;
-      updateHud();
-      endGame('Time is up!');
-      return;
-    }
-
-    updateHud();
-  }, 1000);
 
   game.animationId = requestAnimationFrame(loop);
 }
