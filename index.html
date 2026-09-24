@@ -13,7 +13,10 @@
       <a id="open-game-link" class="launch-link" href="game.html" target="_blank" rel="noopener noreferrer">
         Open Water Drop Game
       </a>
-      <button id="open-game-button" class="launch-button" type="button">Open in New Window (opens a new window)</button>
+      <p id="new-window-note" class="sr-only">This button opens the game in a separate browser window.</p>
+      <button id="open-game-button" class="launch-button" type="button" aria-describedby="new-window-note">
+        Open in New Window
+      </button>
     </main>
     <script>
       document.getElementById("open-game-button").addEventListener("click", () => {

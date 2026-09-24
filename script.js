@@ -27,7 +27,6 @@ if (!canvas || !ctx || !scoreEl || !livesEl || !feedbackEl || !restartBtn) {
     score = 0;
     lives = 5;
     spawnTimerMs = 0;
-    lastFrameTime = 0;
     gameOver = false;
     aim = { x: canvas.width / 2, y: canvas.height - 80 };
     scoreEl.textContent = score;
@@ -181,5 +180,5 @@ if (!canvas || !ctx || !scoreEl || !livesEl || !feedbackEl || !restartBtn) {
   canvas.addEventListener("keydown", handleKeydown);
 
   resetGame();
-  tick();
+  requestAnimationFrame(tick);
 }
