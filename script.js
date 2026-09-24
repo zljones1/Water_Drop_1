@@ -247,7 +247,7 @@ function loop(timestamp) {
   }
 
   const remainingMs = Math.max(0, ROUND_SECONDS * 1000 - game.elapsedTime * 1000);
-  const nextTimeLeft = Math.max(0, Math.ceil(remainingMs / 1000));
+  const nextTimeLeft = Math.max(0, Math.floor(remainingMs / 1000));
   if (nextTimeLeft !== game.timeLeft) {
     game.timeLeft = nextTimeLeft;
     updateHud();
@@ -292,6 +292,7 @@ function startGame() {
   setMessage('Catch clean drops. Avoid brown pollutant drops. Desktop keyboard: focus game area, use arrows, then Space/Enter.');
 
   startButton.disabled = true;
+  gameArea.focus();
 
   game.animationId = requestAnimationFrame(loop);
 }
