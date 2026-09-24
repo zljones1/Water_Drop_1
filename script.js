@@ -11,6 +11,7 @@ let score = 0;
 let lives = 5;
 let spawnTimer = 0;
 let gameOver = false;
+let aim = { x: canvas.width / 2, y: canvas.height - 80 };
 
 function setFeedback(message) {
   feedbackEl.textContent = message;
@@ -22,9 +23,10 @@ function resetGame() {
   lives = 5;
   spawnTimer = 0;
   gameOver = false;
+  aim = { x: canvas.width / 2, y: canvas.height - 80 };
   scoreEl.textContent = score;
   livesEl.textContent = lives;
-  setFeedback("Tap/click good drops. Avoid polluted drops.");
+  setFeedback("Tap/click good drops. Use arrow keys + Enter on the canvas for keyboard play.");
 }
 
 function spawnDrop() {
@@ -72,6 +74,19 @@ function updateDrops() {
 function drawScene() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drops.forEach(drawDrop);
+
+  ctx.beginPath();
+  ctx.arc(aim.x, aim.y, 12, 0, Math.PI * 2);
+  ctx.strokeStyle = "#083451";
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(aim.x - 16, aim.y);
+  ctx.lineTo(aim.x + 16, aim.y);
+  ctx.moveTo(aim.x, aim.y - 16);
+  ctx.lineTo(aim.x, aim.y + 16);
+  ctx.stroke();
 }
 
 function tick() {
@@ -98,6 +113,14 @@ function handleClick(event) {
   const x = (event.clientX - rect.left) * scaleX;
   const y = (event.clientY - rect.top) * scaleY;
 
+  tryTapAt(x, y);
+}
+
+function tryTapAt(x, y) {
+  if (gameOver) {
+    return;
+  }
+
   for (let i = drops.length - 1; i >= 0; i -= 1) {
     const drop = drops[i];
     const dist = Math.hypot(drop.x - x, drop.y - y);
@@ -116,8 +139,38 @@ function handleClick(event) {
   }
 }
 
+function handleKeydown(event) {
+  const step = 24;
+  switch (event.key) {
+    case "ArrowLeft":
+      aim.x = Math.max(0, aim.x - step);
+      event.preventDefault();
+      break;
+    case "ArrowRight":
+      aim.x = Math.min(canvas.width, aim.x + step);
+      event.preventDefault();
+      break;
+    case "ArrowUp":
+      aim.y = Math.max(0, aim.y - step);
+      event.preventDefault();
+      break;
+    case "ArrowDown":
+      aim.y = Math.min(canvas.height, aim.y + step);
+      event.preventDefault();
+      break;
+    case "Enter":
+    case " ":
+      tryTapAt(aim.x, aim.y);
+      event.preventDefault();
+      break;
+    default:
+      break;
+  }
+}
+
 restartBtn.addEventListener("click", resetGame);
 canvas.addEventListener("click", handleClick);
+canvas.addEventListener("keydown", handleKeydown);
 
 resetGame();
 tick();

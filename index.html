@@ -17,7 +17,10 @@
     </main>
     <script>
       document.getElementById("open-game-button").addEventListener("click", () => {
-        window.open("game.html", "water_drop_game", "width=900,height=700,resizable=yes");
+        const gameWindow = window.open("game.html", "water_drop_game", "width=900,height=700,resizable=yes");
+        if (gameWindow) {
+          gameWindow.opener = null;
+        }
       });
     </script>
   </body>
