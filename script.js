@@ -304,7 +304,7 @@ function bindHoldButton(button, onStart) {
     onStart();
   });
   button.addEventListener('keydown', (e) => {
-    if (e.key === ' ' || e.key === 'Enter') {
+    if (e.key === ' ') {
       e.preventDefault();
       onStart();
     }
@@ -331,8 +331,15 @@ function bindHoldButton(button, onStart) {
     stop();
   });
   button.addEventListener('keyup', (e) => {
-    if (e.key === ' ' || e.key === 'Enter') {
+    if (e.key === ' ') {
       stop();
+    }
+  });
+  button.addEventListener('click', (e) => {
+    // Keyboard Enter triggers a native button click with detail 0.
+    if (e.detail === 0) {
+      onStart();
+      setTimeout(stop, 80);
     }
   });
   button.addEventListener('blur', stop);
