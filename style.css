@@ -96,6 +96,11 @@ body {
   border: 1px solid #6f421b;
 }
 
+.drop:focus-visible {
+  outline: 3px solid #111;
+  outline-offset: 2px;
+}
+
 @media (max-width: 700px) {
   .game-area {
     min-height: 340px;

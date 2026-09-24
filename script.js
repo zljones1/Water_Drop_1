@@ -143,7 +143,8 @@ function loop(timestamp) {
     game.spawnElapsed -= SPAWN_INTERVAL_SECONDS;
   }
 
-  const nextTimeLeft = Math.max(0, Math.ceil(ROUND_SECONDS - game.elapsedTime));
+  const remainingMs = Math.max(0, ROUND_SECONDS * 1000 - game.elapsedTime * 1000);
+  const nextTimeLeft = Math.floor(remainingMs / 1000);
   if (nextTimeLeft !== game.timeLeft) {
     game.timeLeft = nextTimeLeft;
     updateHud();
