@@ -259,11 +259,17 @@ function loop(timestamp) {
   }
 
   updateDrops(deltaSeconds);
+  if (!game.active) {
+    return;
+  }
   game.animationId = requestAnimationFrame(loop);
 }
 
 function clearAllDrops() {
-  game.drops.forEach((d) => d.el.remove());
+  game.drops.forEach((d) => {
+    d.removed = true;
+    d.el.remove();
+  });
   game.drops = [];
 }
 
@@ -289,7 +295,7 @@ function startGame() {
 
   clearAllDrops();
   updateHud();
-  setMessage('Catch clean drops. Avoid brown pollutant drops. Desktop keyboard: focus game area, use arrows, then Space/Enter.');
+  setMessage('Tap/click drops to catch. Avoid brown pollutant drops. Desktop keyboard: focus game area, use arrows, then Space/Enter.');
 
   startButton.disabled = true;
   gameArea.focus();
