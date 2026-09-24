@@ -32,6 +32,7 @@ function resetGame() {
   if (animationId !== null) {
     cancelAnimationFrame(animationId);
   }
+  clearDirection();
   drops = [];
   score = 0;
   lives = 3;
@@ -235,10 +236,23 @@ function bindHoldButton(button, onStart) {
     canvas.focus();
     onStart();
   });
+  button.addEventListener('keydown', (e) => {
+    if (e.key === ' ' || e.key === 'Enter') {
+      e.preventDefault();
+      canvas.focus();
+      onStart();
+    }
+  });
   const stop = () => clearDirection();
   button.addEventListener('pointerup', stop);
   button.addEventListener('pointercancel', stop);
   button.addEventListener('pointerleave', stop);
+  button.addEventListener('keyup', (e) => {
+    if (e.key === ' ' || e.key === 'Enter') {
+      stop();
+    }
+  });
+  button.addEventListener('blur', stop);
 }
 
 bindHoldButton(leftBtn, () => {
