@@ -61,9 +61,10 @@ function spawnDrop() {
   });
 }
 
-function movePlayer() {
-  if (keys.left) player.x -= player.speed;
-  if (keys.right) player.x += player.speed;
+function movePlayer(delta) {
+  const frameScale = Math.max(0.5, Math.min(2, delta / (1000 / 60)));
+  if (keys.left) player.x -= player.speed * frameScale;
+  if (keys.right) player.x += player.speed * frameScale;
   if (player.x < 0) player.x = 0;
   if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
 }
@@ -87,7 +88,8 @@ function updateDrops(delta) {
 
   for (let i = drops.length - 1; i >= 0; i -= 1) {
     const d = drops[i];
-    d.y += d.vy;
+    const frameScale = Math.max(0.5, Math.min(2, delta / (1000 / 60)));
+    d.y += d.vy * frameScale;
 
     if (intersectsPlayer(d)) {
       if (d.bad) {
@@ -161,7 +163,7 @@ function loop(ts) {
   const delta = ts - lastFrame;
   lastFrame = ts;
 
-  movePlayer();
+  movePlayer(delta);
   updateDrops(delta);
   updateHud();
   render();
@@ -181,17 +183,24 @@ function setDirectionFromPointer(clientX) {
   keys.right = x >= rect.width / 2;
 }
 
-window.addEventListener('keydown', (e) => {
+function handleKeyDown(e) {
   if (e.key === 'ArrowLeft') keys.left = true;
   if (e.key === 'ArrowRight') keys.right = true;
-});
+}
 
-window.addEventListener('keyup', (e) => {
+function handleKeyUp(e) {
   if (e.key === 'ArrowLeft') keys.left = false;
   if (e.key === 'ArrowRight') keys.right = false;
-});
+}
+
+window.addEventListener('keydown', handleKeyDown);
+window.addEventListener('keyup', handleKeyUp);
+canvas.addEventListener('keydown', handleKeyDown);
+canvas.addEventListener('keyup', handleKeyUp);
 
 canvas.addEventListener('pointerdown', (e) => {
+  canvas.focus();
+  canvas.setPointerCapture(e.pointerId);
   setDirectionFromPointer(e.clientX);
 });
 
