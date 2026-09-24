@@ -157,16 +157,54 @@ function onGameAreaKeyDown(event) {
     return;
   }
 
+  const keyboardDrops = game.drops
+    .filter((drop) => !drop.removed)
+    .sort((a, b) => {
+      if (a.y === b.y) {
+        return a.x - b.x;
+      }
+      return b.y - a.y;
+    });
+
+  if (keyboardDrops.length === 0) {
+    return;
+  }
+
+  const currentFocusedButton =
+    document.activeElement instanceof HTMLButtonElement &&
+    document.activeElement.classList.contains('drop')
+      ? document.activeElement
+      : null;
+
+  const currentIndex = currentFocusedButton
+    ? keyboardDrops.findIndex((drop) => drop.el === currentFocusedButton)
+    : -1;
+
+  if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+    event.preventDefault();
+    const nextIndex = currentIndex < keyboardDrops.length - 1 ? currentIndex + 1 : 0;
+    keyboardDrops[nextIndex].el.focus();
+    return;
+  }
+
+  if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+    event.preventDefault();
+    const prevIndex = currentIndex > 0 ? currentIndex - 1 : keyboardDrops.length - 1;
+    keyboardDrops[prevIndex].el.focus();
+    return;
+  }
+
   if (event.key !== ' ' && event.key !== 'Enter') {
     return;
   }
 
   event.preventDefault();
-  const closestDrop = findClosestDrop(gameArea.clientWidth / 2, gameArea.clientHeight / 2, Number.POSITIVE_INFINITY);
-
-  if (closestDrop) {
-    onDropClick(closestDrop);
+  if (currentFocusedButton) {
+    currentFocusedButton.click();
+    return;
   }
+
+  keyboardDrops[0].el.focus();
 }
 
 function updateDrops(deltaSeconds) {
@@ -251,7 +289,7 @@ function startGame() {
 
   clearAllDrops();
   updateHud();
-  setMessage('Catch clean drops. Avoid brown pollutant drops. On desktop, focus game area and press Space/Enter to catch.');
+  setMessage('Catch clean drops. Avoid brown pollutant drops. Desktop keyboard: focus game area, use arrows, then Space/Enter.');
 
   startButton.disabled = true;
 
