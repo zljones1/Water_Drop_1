@@ -367,6 +367,12 @@ let startUsedPointer = false;
 startBtn.addEventListener('pointerdown', () => {
   startUsedPointer = true;
 });
+startBtn.addEventListener('pointerup', () => {
+  startUsedPointer = false;
+});
+startBtn.addEventListener('pointercancel', () => {
+  startUsedPointer = false;
+});
 
 startBtn.addEventListener('click', (e) => {
   clearDirection();
