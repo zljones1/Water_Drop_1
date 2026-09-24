@@ -44,7 +44,7 @@ if (!canvas || !ctx || !scoreEl || !livesEl || !feedbackEl || !restartBtn) {
       x: radius + Math.random() * (canvas.width - radius * 2),
       y: -radius,
       radius,
-      speed: 1.2 + Math.random() * 2.2,
+      speed: 90 + Math.random() * 135,
       bad: isBad,
     });
   }
@@ -59,10 +59,11 @@ if (!canvas || !ctx || !scoreEl || !livesEl || !feedbackEl || !restartBtn) {
     ctx.stroke();
   }
 
-  function updateDrops() {
+  function updateDrops(deltaMs) {
+    const deltaSeconds = deltaMs / 1000;
     for (let i = drops.length - 1; i >= 0; i -= 1) {
       const drop = drops[i];
-      drop.y += drop.speed;
+      drop.y += drop.speed * deltaSeconds;
 
       if (drop.y - drop.radius > canvas.height) {
         drops.splice(i, 1);
@@ -107,7 +108,7 @@ if (!canvas || !ctx || !scoreEl || !livesEl || !feedbackEl || !restartBtn) {
         spawnDrop();
         spawnTimerMs -= 700;
       }
-      updateDrops();
+      updateDrops(deltaMs);
     }
     drawScene();
     animationFrameId = requestAnimationFrame(tick);
