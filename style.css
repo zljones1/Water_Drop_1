@@ -1,0 +1,76 @@
+:root {
+  color-scheme: light dark;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+.launcher-page,
+.game-page {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(160deg, #0a2b45, #1d6f96);
+}
+
+.launcher-card,
+.game-shell {
+  width: min(92vw, 900px);
+  background: rgba(255, 255, 255, 0.9);
+  color: #112;
+  border-radius: 14px;
+  padding: 1.25rem;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.2);
+}
+
+.launch-link,
+.launch-button,
+#restart {
+  display: inline-block;
+  margin-top: 0.8rem;
+  margin-right: 0.6rem;
+  padding: 0.65rem 1rem;
+  border-radius: 8px;
+  border: 0;
+  background: #0f6ca8;
+  color: #fff;
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.launch-link:hover,
+.launch-button:hover,
+#restart:hover {
+  background: #0b547f;
+}
+
+.hud {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.stats {
+  display: flex;
+  gap: 1rem;
+  font-weight: 700;
+}
+
+#feedback {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+#game-canvas {
+  margin-top: 0.8rem;
+  width: 100%;
+  border: 2px solid #0f6ca8;
+  border-radius: 10px;
+  background: linear-gradient(#d7f3ff, #8ad0f0);
+}
+
+.controls {
+  margin-top: 0.8rem;
+}

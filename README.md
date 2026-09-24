@@ -1,2 +1,10 @@
 # Water_Drop_1
-Water Drop: In this game, users collect as many falling water drops as possible while avoiding pollutants (bad drops). Users tap to collect drops before they hit the ground. Include a score counter, feedback messages, and penalties for “bad drops” to make it more engaging. 
+
+Water Drop is a browser game where players collect good falling drops and avoid bad drops.
+
+## Run locally
+
+1. From the repository root, start a static server:
+   - `python -m http.server 8000`
+2. Open `http://localhost:8000` in your browser.
+3. Click **Open Water Drop Game** to launch the game in a separate window/tab.

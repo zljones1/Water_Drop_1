@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Water Drop Launcher</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="launcher-page">
+    <main class="launcher-card">
+      <h1>Water Drop</h1>
+      <p>Open the game in a separate window and start collecting drops.</p>
+      <a id="open-game-link" class="launch-link" href="game.html" target="_blank" rel="noopener noreferrer">
+        Open Water Drop Game
+      </a>
+      <button id="open-game-button" class="launch-button" type="button">Open in New Window</button>
+    </main>
+    <script>
+      document.getElementById("open-game-button").addEventListener("click", () => {
+        window.open("game.html", "water_drop_game", "width=900,height=700,resizable=yes");
+      });
+    </script>
+  </body>
+</html>
