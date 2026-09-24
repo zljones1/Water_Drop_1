@@ -304,7 +304,7 @@ function bindHoldButton(button, onStart) {
     onStart();
   });
   button.addEventListener('keydown', (e) => {
-    if (e.key === ' ' || e.key === 'Enter') {
+    if (e.key === ' ') {
       e.preventDefault();
       onStart();
     }
@@ -331,7 +331,7 @@ function bindHoldButton(button, onStart) {
     stop();
   });
   button.addEventListener('keyup', (e) => {
-    if (e.key === ' ' || e.key === 'Enter') {
+    if (e.key === ' ') {
       stop();
     }
   });
