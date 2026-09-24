@@ -159,7 +159,7 @@ function startGame() {
   game.lives = INITIAL_LIVES;
   game.timeLeft = ROUND_SECONDS;
   game.active = true;
-  game.lastFrame = 0;
+  game.lastFrame = performance.now();
 
   clearAllDrops();
   updateHud();

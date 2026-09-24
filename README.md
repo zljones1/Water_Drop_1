@@ -11,7 +11,7 @@ Water Drop is a wireframe browser game prototype where you collect clean water d
 - Restart button after game over/time up
 
 ## Run Locally
-1. Open a terminal in the repository root: `/home/runner/work/Water_Drop_1/Water_Drop_1`
+1. Open a terminal in the repository root (the folder containing `index.html`).
 2. Start a local server:
    - `python -m http.server 8000`
 3. Open `http://localhost:8000` in your browser.
