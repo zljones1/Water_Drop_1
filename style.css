@@ -57,6 +57,7 @@ h1 {
   display: block;
   border-radius: 6px;
   background: linear-gradient(#d6efff, #f9fdff);
+  touch-action: none;
 }
 
 .controls {

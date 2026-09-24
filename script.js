@@ -188,13 +188,25 @@ function setDirectionFromPointer(clientX) {
 }
 
 function handleKeyDown(e) {
-  if (e.key === 'ArrowLeft') keys.left = true;
-  if (e.key === 'ArrowRight') keys.right = true;
+  if (e.key === 'ArrowLeft') {
+    e.preventDefault();
+    keys.left = true;
+  }
+  if (e.key === 'ArrowRight') {
+    e.preventDefault();
+    keys.right = true;
+  }
 }
 
 function handleKeyUp(e) {
-  if (e.key === 'ArrowLeft') keys.left = false;
-  if (e.key === 'ArrowRight') keys.right = false;
+  if (e.key === 'ArrowLeft') {
+    e.preventDefault();
+    keys.left = false;
+  }
+  if (e.key === 'ArrowRight') {
+    e.preventDefault();
+    keys.right = false;
+  }
 }
 
 window.addEventListener('keydown', handleKeyDown);
