@@ -74,12 +74,13 @@ body {
   border-radius: 10px;
   overflow: hidden;
   background: linear-gradient(#def4ff, #b7e6ff);
+  touch-action: none;
 }
 
 .drop {
   position: absolute;
-  width: 34px;
-  height: 42px;
+  width: 44px;
+  height: 50px;
   border-radius: 50% 50% 55% 55%;
   cursor: pointer;
   user-select: none;

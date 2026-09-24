@@ -14,6 +14,9 @@ const DROP_MIN_SPEED = 120;
 const DROP_SPEED_RANGE = 140;
 const SPAWN_INTERVAL_SECONDS = SPAWN_INTERVAL_MS / 1000;
 const MAX_FRAME_DELTA_SECONDS = 0.1;
+const DROP_WIDTH = 44;
+const DROP_HEIGHT = 50;
+const POINTER_CATCH_RADIUS = 52;
 
 const game = {
   score: 0,
@@ -52,20 +55,21 @@ function createDrop() {
   drop.className = `drop ${isBad ? 'bad' : 'good'}`;
   drop.setAttribute('aria-label', isBad ? 'Pollutant drop' : 'Water drop');
 
-  const maxX = Math.max(0, gameArea.clientWidth - 40);
+  const maxX = Math.max(0, gameArea.clientWidth - DROP_WIDTH);
   const x = Math.random() * maxX;
   const speed = DROP_MIN_SPEED + Math.random() * DROP_SPEED_RANGE;
 
   const data = {
     el: drop,
     x,
-    y: -45,
+    y: -DROP_HEIGHT,
     speed,
     isBad,
+    removed: false,
   };
 
   drop.style.left = `${x}px`;
-  drop.style.top = '-45px';
+  drop.style.top = `-${DROP_HEIGHT}px`;
 
   drop.addEventListener('click', () => onDropClick(data), { once: true });
 
@@ -74,15 +78,20 @@ function createDrop() {
 }
 
 function removeDrop(dropData) {
+  if (dropData.removed) {
+    return;
+  }
+
   const idx = game.drops.indexOf(dropData);
   if (idx !== -1) {
     game.drops.splice(idx, 1);
   }
+  dropData.removed = true;
   dropData.el.remove();
 }
 
 function onDropClick(dropData) {
-  if (!game.active) {
+  if (!game.active || dropData.removed) {
     return;
   }
 
@@ -94,6 +103,47 @@ function onDropClick(dropData) {
   } else {
     game.score += 1;
     setMessage('Great catch!');
+  }
+
+  function findClosestDrop(x, y, maxDistance) {
+    let closestDrop = null;
+    let closestDistance = Number.POSITIVE_INFINITY;
+
+    for (const drop of game.drops) {
+      if (drop.removed) {
+        continue;
+      }
+
+      const centerX = drop.x + DROP_WIDTH / 2;
+      const centerY = drop.y + DROP_HEIGHT / 2;
+      const distance = Math.hypot(centerX - x, centerY - y);
+
+      if (distance <= maxDistance && distance < closestDistance) {
+        closestDrop = drop;
+        closestDistance = distance;
+      }
+    }
+
+    return closestDrop;
+  }
+
+  function onGameAreaPointerDown(event) {
+    if (!game.active) {
+      return;
+    }
+
+    if (event.target.classList.contains('drop')) {
+      return;
+    }
+
+    const rect = gameArea.getBoundingClientRect();
+    const pointerX = event.clientX - rect.left;
+    const pointerY = event.clientY - rect.top;
+    const closestDrop = findClosestDrop(pointerX, pointerY, POINTER_CATCH_RADIUS);
+
+    if (closestDrop) {
+      onDropClick(closestDrop);
+    }
   }
 
   updateHud();
@@ -198,4 +248,5 @@ function startGame() {
 }
 
 startButton.addEventListener('click', startGame);
+gameArea.addEventListener('pointerdown', onGameAreaPointerDown);
 updateHud();

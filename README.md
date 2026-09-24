@@ -9,6 +9,7 @@ Water Drop is a wireframe browser game prototype where you collect clean water d
 - 60-second round timer
 - Feedback messages for player actions
 - Restart button after game over/time up
+- Mobile + desktop play support (touch, mouse, and keyboard focus)
 
 ## Run Locally
 1. Open a terminal in the repository root (the folder containing `index.html`).
