@@ -60,6 +60,7 @@ function resetGame() {
   player.x = canvas.width / 2 - player.width / 2;
   lastFrame = performance.now();
   spawnDrop();
+  feedbackEl.setAttribute('aria-live', 'polite');
   setFeedback('Collect clean drops. Avoid dark pollutant drops!');
   updateHud();
   render();
@@ -197,6 +198,7 @@ function render() {
 function gameOver() {
   running = false;
   drops = [];
+  feedbackEl.setAttribute('aria-live', 'assertive');
   setFeedback(`Game over! Final score: ${score}. Press Start / Restart.`);
 }
 
