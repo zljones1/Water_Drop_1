@@ -14,20 +14,28 @@
       </header>
 
       <section class="hud" aria-label="Game status">
-        <div>Score: <span id="score">0</span></div>
-        <div>Lives: <span id="lives">3</span></div>
-        <div>Speed: <span id="speed">1.0x</span></div>
+        <div id="scoreStatus">Score: <span id="score">0</span></div>
+        <div id="livesStatus">Lives: <span id="lives">3</span></div>
+        <div id="speedStatus">Speed: <span id="speed">1.0x</span></div>
       </section>
 
       <section class="play-area-wrap">
-        <canvas id="gameCanvas" width="420" height="600" aria-label="Water drop game area">
+        <canvas
+          id="gameCanvas"
+          width="420"
+          height="600"
+          tabindex="0"
+          aria-label="Water drop game area"
+          aria-describedby="controlsText scoreStatus livesStatus speedStatus feedback"
+        >
           Water Drop game area. Move left and right to catch clean drops and avoid pollutant drops.
         </canvas>
       </section>
 
       <section class="controls">
         <button id="startBtn" type="button">Start / Restart</button>
-        <p id="feedback" role="status" aria-live="polite">Use ← / → keys or tap left/right half to move.</p>
+        <p id="controlsText">Use ← / → keys or tap left/right half to move.</p>
+        <p id="feedback" role="status" aria-live="polite"></p>
       </section>
     </main>
 
