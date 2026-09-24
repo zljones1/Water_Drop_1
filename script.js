@@ -59,9 +59,9 @@ function resetGame() {
   spawnEvery = 900;
   player.x = canvas.width / 2 - player.width / 2;
   lastFrame = performance.now();
-  spawnDrop();
+  spawnDrop(22);
   feedbackEl.setAttribute('aria-live', 'polite');
-  setFeedback('Collect clean drops. Avoid dark pollutant drops!');
+  setFeedback('Game started! Collect clean drops and avoid pollutants.');
   updateHud();
   render();
   animationId = requestAnimationFrame(loop);
@@ -77,10 +77,10 @@ function updateHud() {
   speedEl.textContent = `${(900 / spawnEvery).toFixed(1)}x`;
 }
 
-function spawnDrop() {
+function spawnDrop(yStart = -20) {
   drops.push({
     x: Math.random() * (canvas.width - 20),
-    y: -20,
+    y: yStart,
     radius: 10,
     vy: 2 + Math.random() * 1.5 + score * 0.02,
     bad: Math.random() < 0.25,
