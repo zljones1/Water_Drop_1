@@ -243,7 +243,7 @@ canvas.addEventListener('pointerdown', (e) => {
 });
 
 canvas.addEventListener('pointermove', (e) => {
-  if (e.buttons > 0 && e.pointerId === activePointerId) {
+  if (e.pointerId === activePointerId) {
     setDirectionFromPointer(e.clientX);
   }
 });
@@ -297,6 +297,7 @@ bindHoldButton(rightBtn, () => {
 });
 
 startBtn.addEventListener('click', () => {
+  clearDirection();
   canvas.focus();
   resetGame();
 });
