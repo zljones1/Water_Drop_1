@@ -363,11 +363,17 @@ bindHoldButton(rightBtn, () => {
   keys.left = false;
 });
 
+let startUsedPointer = false;
+startBtn.addEventListener('pointerdown', () => {
+  startUsedPointer = true;
+});
+
 startBtn.addEventListener('click', (e) => {
   clearDirection();
-  if (e.detail === 0) {
+  if (!startUsedPointer) {
     canvas.focus();
   }
+  startUsedPointer = false;
   resetGame();
 });
 
