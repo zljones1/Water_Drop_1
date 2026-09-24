@@ -24,8 +24,6 @@ const game = {
   timeLeft: ROUND_SECONDS,
   active: false,
   drops: [],
-  spawnTimer: null,
-  tickTimer: null,
   animationId: null,
   lastFrame: 0,
   elapsedTime: 0,
@@ -105,52 +103,52 @@ function onDropClick(dropData) {
     setMessage('Great catch!');
   }
 
-  function findClosestDrop(x, y, maxDistance) {
-    let closestDrop = null;
-    let closestDistance = Number.POSITIVE_INFINITY;
-
-    for (const drop of game.drops) {
-      if (drop.removed) {
-        continue;
-      }
-
-      const centerX = drop.x + DROP_WIDTH / 2;
-      const centerY = drop.y + DROP_HEIGHT / 2;
-      const distance = Math.hypot(centerX - x, centerY - y);
-
-      if (distance <= maxDistance && distance < closestDistance) {
-        closestDrop = drop;
-        closestDistance = distance;
-      }
-    }
-
-    return closestDrop;
-  }
-
-  function onGameAreaPointerDown(event) {
-    if (!game.active) {
-      return;
-    }
-
-    if (event.target.classList.contains('drop')) {
-      return;
-    }
-
-    const rect = gameArea.getBoundingClientRect();
-    const pointerX = event.clientX - rect.left;
-    const pointerY = event.clientY - rect.top;
-    const closestDrop = findClosestDrop(pointerX, pointerY, POINTER_CATCH_RADIUS);
-
-    if (closestDrop) {
-      onDropClick(closestDrop);
-    }
-  }
-
   updateHud();
   removeDrop(dropData);
 
   if (game.lives <= 0) {
     endGame('Game over! You ran out of lives.');
+  }
+}
+
+function findClosestDrop(x, y, maxDistance) {
+  let closestDrop = null;
+  let closestDistance = Number.POSITIVE_INFINITY;
+
+  for (const drop of game.drops) {
+    if (drop.removed) {
+      continue;
+    }
+
+    const centerX = drop.x + DROP_WIDTH / 2;
+    const centerY = drop.y + DROP_HEIGHT / 2;
+    const distance = Math.hypot(centerX - x, centerY - y);
+
+    if (distance <= maxDistance && distance < closestDistance) {
+      closestDrop = drop;
+      closestDistance = distance;
+    }
+  }
+
+  return closestDrop;
+}
+
+function onGameAreaPointerDown(event) {
+  if (!game.active) {
+    return;
+  }
+
+  if (event.target instanceof Element && event.target.classList.contains('drop')) {
+    return;
+  }
+
+  const rect = gameArea.getBoundingClientRect();
+  const pointerX = event.clientX - rect.left;
+  const pointerY = event.clientY - rect.top;
+  const closestDrop = findClosestDrop(pointerX, pointerY, POINTER_CATCH_RADIUS);
+
+  if (closestDrop) {
+    onDropClick(closestDrop);
   }
 }
 
@@ -216,8 +214,6 @@ function clearAllDrops() {
 
 function endGame(finalMessage) {
   game.active = false;
-  clearInterval(game.spawnTimer);
-  clearInterval(game.tickTimer);
   cancelAnimationFrame(game.animationId);
   clearAllDrops();
   setMessage(`${finalMessage} Final score: ${game.score}.`);
@@ -226,8 +222,6 @@ function endGame(finalMessage) {
 }
 
 function startGame() {
-  clearInterval(game.spawnTimer);
-  clearInterval(game.tickTimer);
   cancelAnimationFrame(game.animationId);
 
   game.score = 0;
