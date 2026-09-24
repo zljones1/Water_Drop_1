@@ -15,8 +15,20 @@
           <span>Lives: <strong id="lives">5</strong></span>
         </div>
         <p id="feedback">Tap/click good drops. Use arrow keys + Enter on the canvas for keyboard play.</p>
+        <p id="canvas-help" class="sr-only">
+          Game controls: click or tap drops to collect. For keyboard play, focus the game area, move the target with arrow keys, and press Enter or Space to tap.
+        </p>
       </header>
-      <canvas id="game-canvas" width="860" height="500" aria-label="Water Drop Game Area" tabindex="0"></canvas>
+      <canvas
+        id="game-canvas"
+        width="860"
+        height="500"
+        aria-label="Water Drop Game Area"
+        aria-describedby="canvas-help"
+        tabindex="0"
+      >
+        Water Drop game area.
+      </canvas>
       <div class="controls">
         <button id="restart" type="button">Restart</button>
       </div>

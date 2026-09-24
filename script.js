@@ -5,6 +5,7 @@ const scoreEl = document.getElementById("score");
 const livesEl = document.getElementById("lives");
 const feedbackEl = document.getElementById("feedback");
 const restartBtn = document.getElementById("restart");
+const RETICLE_RADIUS = 12;
 
 let drops = [];
 let score = 0;
@@ -76,7 +77,7 @@ function drawScene() {
   drops.forEach(drawDrop);
 
   ctx.beginPath();
-  ctx.arc(aim.x, aim.y, 12, 0, Math.PI * 2);
+  ctx.arc(aim.x, aim.y, RETICLE_RADIUS, 0, Math.PI * 2);
   ctx.strokeStyle = "#083451";
   ctx.lineWidth = 2;
   ctx.stroke();
@@ -143,19 +144,19 @@ function handleKeydown(event) {
   const step = 24;
   switch (event.key) {
     case "ArrowLeft":
-      aim.x = Math.max(0, aim.x - step);
+      aim.x = Math.max(RETICLE_RADIUS, aim.x - step);
       event.preventDefault();
       break;
     case "ArrowRight":
-      aim.x = Math.min(canvas.width, aim.x + step);
+      aim.x = Math.min(canvas.width - RETICLE_RADIUS, aim.x + step);
       event.preventDefault();
       break;
     case "ArrowUp":
-      aim.y = Math.max(0, aim.y - step);
+      aim.y = Math.max(RETICLE_RADIUS, aim.y - step);
       event.preventDefault();
       break;
     case "ArrowDown":
-      aim.y = Math.min(canvas.height, aim.y + step);
+      aim.y = Math.min(canvas.height - RETICLE_RADIUS, aim.y + step);
       event.preventDefault();
       break;
     case "Enter":
