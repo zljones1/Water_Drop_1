@@ -78,10 +78,11 @@ function updateHud() {
 }
 
 function spawnDrop(yStart = -20) {
+  const radius = 10;
   drops.push({
-    x: Math.random() * (canvas.width - 20),
+    x: radius + Math.random() * (canvas.width - radius * 2),
     y: yStart,
-    radius: 10,
+    radius,
     vy: 2 + Math.random() * 1.5 + score * 0.02,
     bad: Math.random() < 0.25,
   });
@@ -289,6 +290,7 @@ canvas.addEventListener('pointercancel', releasePointerCapture);
 
 function bindHoldButton(button, onStart) {
   let activeButtonPointerId = null;
+  let suppressNextKeyboardClick = false;
 
   button.addEventListener('pointerdown', (e) => {
     if (e.button !== 0 || !e.isPrimary) {
@@ -332,12 +334,18 @@ function bindHoldButton(button, onStart) {
   });
   button.addEventListener('keyup', (e) => {
     if (e.key === ' ') {
+      e.preventDefault();
       stop();
+      suppressNextKeyboardClick = true;
     }
   });
   button.addEventListener('click', (e) => {
     // Keyboard Enter triggers a native button click with detail 0.
     if (e.detail === 0) {
+      if (suppressNextKeyboardClick) {
+        suppressNextKeyboardClick = false;
+        return;
+      }
       onStart();
       setTimeout(stop, 80);
     }

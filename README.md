@@ -21,7 +21,7 @@ Then open `http://localhost:8000` in your browser.
 
 ### Controls
 
-- Move left/right with arrow keys
+- Click/tap the game area first, then move left/right with arrow keys
 - Or use the on-screen **Move Left** / **Move Right** buttons
 - Or tap/click left or right side of the game area
 - Catch clean drops for points
