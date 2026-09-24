@@ -204,6 +204,16 @@ canvas.addEventListener('pointerup', () => {
   keys.right = false;
 });
 
+window.addEventListener('pointerup', () => {
+  keys.left = false;
+  keys.right = false;
+});
+
+window.addEventListener('pointercancel', () => {
+  keys.left = false;
+  keys.right = false;
+});
+
 startBtn.addEventListener('click', () => {
   lastFrame = performance.now();
   resetGame();
