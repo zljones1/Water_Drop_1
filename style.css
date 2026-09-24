@@ -1,0 +1,102 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f3f7ff;
+  color: #1d2a3a;
+}
+
+.game-shell {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 1rem;
+  display: grid;
+  gap: 0.9rem;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.mission {
+  margin: 0.3rem 0 0;
+}
+
+.hud {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.4rem;
+  font-weight: 700;
+}
+
+.hud > div,
+.controls,
+.play-area-wrap {
+  border: 2px solid #95a7bf;
+  background: #ffffff;
+  border-radius: 8px;
+}
+
+.hud > div {
+  padding: 0.45rem;
+  text-align: center;
+}
+
+.play-area-wrap {
+  padding: 0.4rem;
+}
+
+#gameCanvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+  background: linear-gradient(#d6efff, #f9fdff);
+  touch-action: none;
+}
+
+#gameCanvas:focus-visible {
+  outline: 3px solid #2f6aa6;
+  outline-offset: 3px;
+}
+
+.controls {
+  padding: 0.7rem;
+}
+
+#startBtn {
+  width: 100%;
+  padding: 0.65rem;
+  font-size: 1rem;
+  border: 2px solid #2f6aa6;
+  background: #4f8cc9;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.alt-controls {
+  margin-top: 0.6rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.alt-controls button {
+  padding: 0.55rem;
+  border: 2px solid #2f6aa6;
+  border-radius: 6px;
+  background: #eef5fc;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+#feedback {
+  margin: 0.7rem 0 0;
+  min-height: 1.25rem;
+}
