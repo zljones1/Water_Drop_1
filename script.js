@@ -79,9 +79,9 @@ function intersectsPlayer(drop) {
 
 function updateDrops(delta) {
   dropTimer += delta;
-  if (dropTimer >= spawnEvery) {
+  while (dropTimer >= spawnEvery) {
     spawnDrop();
-    dropTimer = 0;
+    dropTimer -= spawnEvery;
     spawnEvery = Math.max(320, spawnEvery - 8);
   }
 
@@ -94,6 +94,10 @@ function updateDrops(delta) {
         score = Math.max(0, score - 3);
         lives -= 1;
         setFeedback('Ouch! Pollutant caught: -3 score and -1 life.');
+        if (lives <= 0) {
+          drops.splice(i, 1);
+          break;
+        }
       } else {
         score += 1;
         setFeedback('Nice catch! Keep going.');
@@ -106,6 +110,10 @@ function updateDrops(delta) {
       if (!d.bad) {
         lives -= 1;
         setFeedback('You missed a clean drop: -1 life.');
+        if (lives <= 0) {
+          drops.splice(i, 1);
+          break;
+        }
       }
       drops.splice(i, 1);
     }

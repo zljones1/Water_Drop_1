@@ -11,7 +11,7 @@ This repository now includes a simple wireframe web game:
 
 ### Run locally
 
-From `/home/runner/work/Water_Drop_1/Water_Drop_1`, run:
+From the repository root, run:
 
 ```bash
 python -m http.server 8000
