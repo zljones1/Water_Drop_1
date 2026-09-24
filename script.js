@@ -152,6 +152,23 @@ function onGameAreaPointerDown(event) {
   }
 }
 
+function onGameAreaKeyDown(event) {
+  if (!game.active) {
+    return;
+  }
+
+  if (event.key !== ' ' && event.key !== 'Enter') {
+    return;
+  }
+
+  event.preventDefault();
+  const closestDrop = findClosestDrop(gameArea.clientWidth / 2, gameArea.clientHeight / 2, Number.POSITIVE_INFINITY);
+
+  if (closestDrop) {
+    onDropClick(closestDrop);
+  }
+}
+
 function updateDrops(deltaSeconds) {
   for (let i = game.drops.length - 1; i >= 0; i -= 1) {
     const drop = game.drops[i];
@@ -192,7 +209,7 @@ function loop(timestamp) {
   }
 
   const remainingMs = Math.max(0, ROUND_SECONDS * 1000 - game.elapsedTime * 1000);
-  const nextTimeLeft = Math.floor(remainingMs / 1000);
+  const nextTimeLeft = Math.max(0, Math.ceil(remainingMs / 1000));
   if (nextTimeLeft !== game.timeLeft) {
     game.timeLeft = nextTimeLeft;
     updateHud();
@@ -234,7 +251,7 @@ function startGame() {
 
   clearAllDrops();
   updateHud();
-  setMessage('Catch clean drops. Avoid brown pollutant drops!');
+  setMessage('Catch clean drops. Avoid brown pollutant drops. On desktop, focus game area and press Space/Enter to catch.');
 
   startButton.disabled = true;
 
@@ -243,4 +260,5 @@ function startGame() {
 
 startButton.addEventListener('click', startGame);
 gameArea.addEventListener('pointerdown', onGameAreaPointerDown);
+gameArea.addEventListener('keydown', onGameAreaKeyDown);
 updateHud();

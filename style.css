@@ -77,6 +77,11 @@ body {
   touch-action: none;
 }
 
+.game-area:focus-visible {
+  outline: 3px solid #111;
+  outline-offset: 3px;
+}
+
 .drop {
   position: absolute;
   width: 44px;
