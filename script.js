@@ -306,7 +306,6 @@ function bindHoldButton(button, onStart) {
   button.addEventListener('keydown', (e) => {
     if (e.key === ' ' || e.key === 'Enter') {
       e.preventDefault();
-      canvas.focus();
       onStart();
     }
   });
@@ -351,7 +350,6 @@ bindHoldButton(rightBtn, () => {
 
 startBtn.addEventListener('click', () => {
   clearDirection();
-  canvas.focus();
   resetGame();
 });
 
