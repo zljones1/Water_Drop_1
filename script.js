@@ -363,8 +363,11 @@ bindHoldButton(rightBtn, () => {
   keys.left = false;
 });
 
-startBtn.addEventListener('click', () => {
+startBtn.addEventListener('click', (e) => {
   clearDirection();
+  if (e.detail === 0) {
+    canvas.focus();
+  }
   resetGame();
 });
 
