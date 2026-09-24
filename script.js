@@ -14,7 +14,7 @@ if (!canvas || !ctx || !scoreEl || !livesEl || !feedbackEl || !restartBtn) {
   let score = 0;
   let lives = 5;
   let spawnTimerMs = 0;
-  let lastFrameTime = 0;
+  let lastFrameTime = null;
   let gameOver = false;
   let aim = { x: canvas.width / 2, y: canvas.height - 80 };
 
@@ -27,6 +27,7 @@ if (!canvas || !ctx || !scoreEl || !livesEl || !feedbackEl || !restartBtn) {
     score = 0;
     lives = 5;
     spawnTimerMs = 0;
+    lastFrameTime = null;
     gameOver = false;
     aim = { x: canvas.width / 2, y: canvas.height - 80 };
     scoreEl.textContent = score;
@@ -95,7 +96,7 @@ if (!canvas || !ctx || !scoreEl || !livesEl || !feedbackEl || !restartBtn) {
   }
 
   function tick(timestamp) {
-    const deltaMs = lastFrameTime ? timestamp - lastFrameTime : 16;
+    const deltaMs = lastFrameTime === null ? 16 : timestamp - lastFrameTime;
     lastFrameTime = timestamp;
 
     if (!gameOver) {
@@ -167,6 +168,8 @@ if (!canvas || !ctx || !scoreEl || !livesEl || !feedbackEl || !restartBtn) {
         break;
       case "Enter":
       case " ":
+      case "Space":
+      case "Spacebar":
         tryTapAt(aim.x, aim.y);
         event.preventDefault();
         break;
