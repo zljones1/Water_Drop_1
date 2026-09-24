@@ -5,10 +5,18 @@ const messageEl = document.getElementById('message');
 const gameArea = document.getElementById('gameArea');
 const startButton = document.getElementById('startButton');
 
+const INITIAL_LIVES = 3;
+const ROUND_SECONDS = 60;
+const SPAWN_INTERVAL_MS = 550;
+const BAD_DROP_CHANCE = 0.25;
+const BAD_SCORE_PENALTY = 2;
+const DROP_MIN_SPEED = 120;
+const DROP_SPEED_RANGE = 140;
+
 const game = {
   score: 0,
-  lives: 3,
-  timeLeft: 60,
+  lives: INITIAL_LIVES,
+  timeLeft: ROUND_SECONDS,
   active: false,
   drops: [],
   spawnTimer: null,
@@ -34,7 +42,7 @@ function clampScore() {
 }
 
 function createDrop() {
-  const isBad = Math.random() < 0.25;
+  const isBad = Math.random() < BAD_DROP_CHANCE;
   const drop = document.createElement('button');
   drop.type = 'button';
   drop.className = `drop ${isBad ? 'bad' : 'good'}`;
@@ -42,7 +50,7 @@ function createDrop() {
 
   const maxX = Math.max(0, gameArea.clientWidth - 40);
   const x = Math.random() * maxX;
-  const speed = 120 + Math.random() * 140;
+  const speed = DROP_MIN_SPEED + Math.random() * DROP_SPEED_RANGE;
 
   const data = {
     el: drop,
@@ -75,7 +83,7 @@ function onDropClick(dropData) {
   }
 
   if (dropData.isBad) {
-    game.score -= 2;
+    game.score -= BAD_SCORE_PENALTY;
     game.lives -= 1;
     clampScore();
     setMessage('Ouch! You tapped pollution.');
@@ -148,8 +156,8 @@ function endGame(finalMessage) {
 
 function startGame() {
   game.score = 0;
-  game.lives = 3;
-  game.timeLeft = 60;
+  game.lives = INITIAL_LIVES;
+  game.timeLeft = ROUND_SECONDS;
   game.active = true;
   game.lastFrame = 0;
 
@@ -159,18 +167,21 @@ function startGame() {
 
   startButton.disabled = true;
 
-  game.spawnTimer = setInterval(createDrop, 550);
+  game.spawnTimer = setInterval(createDrop, SPAWN_INTERVAL_MS);
   game.tickTimer = setInterval(() => {
     if (!game.active) {
       return;
     }
 
     game.timeLeft -= 1;
-    updateHud();
-
     if (game.timeLeft <= 0) {
+      game.timeLeft = 0;
+      updateHud();
       endGame('Time is up!');
+      return;
     }
+
+    updateHud();
   }, 1000);
 
   game.animationId = requestAnimationFrame(loop);
