@@ -196,8 +196,8 @@ function handleKeyUp(e) {
   if (e.key === 'ArrowRight') keys.right = false;
 }
 
-canvas.addEventListener('keydown', handleKeyDown);
-canvas.addEventListener('keyup', handleKeyUp);
+window.addEventListener('keydown', handleKeyDown);
+window.addEventListener('keyup', handleKeyUp);
 
 canvas.addEventListener('pointerdown', (e) => {
   canvas.focus();
@@ -207,7 +207,9 @@ canvas.addEventListener('pointerdown', (e) => {
 });
 
 canvas.addEventListener('pointermove', (e) => {
-  if (e.buttons > 0) setDirectionFromPointer(e.clientX);
+  if (e.buttons > 0 && e.pointerId === activePointerId) {
+    setDirectionFromPointer(e.clientX);
+  }
 });
 
 function clearDirection() {
@@ -215,7 +217,7 @@ function clearDirection() {
   keys.right = false;
 }
 
-function releasePointerCapture(e) {
+function releasePointerCapture() {
   if (activePointerId !== null && canvas.hasPointerCapture(activePointerId)) {
     canvas.releasePointerCapture(activePointerId);
   }
