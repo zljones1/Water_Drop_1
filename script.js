@@ -13,7 +13,8 @@ if (!canvas || !ctx || !scoreEl || !livesEl || !feedbackEl || !restartBtn) {
   let drops = [];
   let score = 0;
   let lives = 5;
-  let spawnTimer = 0;
+  let spawnTimerMs = 0;
+  let lastFrameTime = 0;
   let gameOver = false;
   let aim = { x: canvas.width / 2, y: canvas.height - 80 };
 
@@ -25,7 +26,8 @@ if (!canvas || !ctx || !scoreEl || !livesEl || !feedbackEl || !restartBtn) {
     drops = [];
     score = 0;
     lives = 5;
-    spawnTimer = 0;
+    spawnTimerMs = 0;
+    lastFrameTime = 0;
     gameOver = false;
     aim = { x: canvas.width / 2, y: canvas.height - 80 };
     scoreEl.textContent = score;
@@ -93,12 +95,15 @@ if (!canvas || !ctx || !scoreEl || !livesEl || !feedbackEl || !restartBtn) {
     ctx.stroke();
   }
 
-  function tick() {
+  function tick(timestamp) {
+    const deltaMs = lastFrameTime ? timestamp - lastFrameTime : 16;
+    lastFrameTime = timestamp;
+
     if (!gameOver) {
-      spawnTimer += 1;
-      if (spawnTimer >= 36) {
+      spawnTimerMs += deltaMs;
+      while (spawnTimerMs >= 700) {
         spawnDrop();
-        spawnTimer = 0;
+        spawnTimerMs -= 700;
       }
       updateDrops();
     }
