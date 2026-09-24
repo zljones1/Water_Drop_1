@@ -155,6 +155,10 @@ function endGame(finalMessage) {
 }
 
 function startGame() {
+  clearInterval(game.spawnTimer);
+  clearInterval(game.tickTimer);
+  cancelAnimationFrame(game.animationId);
+
   game.score = 0;
   game.lives = INITIAL_LIVES;
   game.timeLeft = ROUND_SECONDS;
