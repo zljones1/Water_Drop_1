@@ -28,14 +28,28 @@ let lastFrame = 0;
 let animationId = null;
 let activePointerId = null;
 
+function clearDirection() {
+  keys.left = false;
+  keys.right = false;
+}
+
+function clearActivePointerCapture() {
+  if (activePointerId === null) return;
+  try {
+    if (canvas.hasPointerCapture(activePointerId)) {
+      canvas.releasePointerCapture(activePointerId);
+    }
+  } catch {
+    // Pointer can already be inactive after interruption.
+  }
+  activePointerId = null;
+}
+
 function resetGame() {
   if (animationId !== null) {
     cancelAnimationFrame(animationId);
   }
-  if (activePointerId !== null && canvas.hasPointerCapture(activePointerId)) {
-    canvas.releasePointerCapture(activePointerId);
-  }
-  activePointerId = null;
+  clearActivePointerCapture();
   clearDirection();
   drops = [];
   score = 0;
@@ -214,14 +228,15 @@ function handleKeyUp(e) {
   }
 }
 
-window.addEventListener('keydown', handleKeyDown);
-window.addEventListener('keyup', handleKeyUp);
+canvas.addEventListener('keydown', handleKeyDown);
+canvas.addEventListener('keyup', handleKeyUp);
 
 canvas.addEventListener('pointerdown', (e) => {
-  canvas.focus();
-  if (activePointerId !== null && canvas.hasPointerCapture(activePointerId)) {
-    canvas.releasePointerCapture(activePointerId);
+  if (e.button !== 0 || !e.isPrimary) {
+    return;
   }
+  canvas.focus();
+  clearActivePointerCapture();
   activePointerId = e.pointerId;
   canvas.setPointerCapture(e.pointerId);
   setDirectionFromPointer(e.clientX);
@@ -233,16 +248,8 @@ canvas.addEventListener('pointermove', (e) => {
   }
 });
 
-function clearDirection() {
-  keys.left = false;
-  keys.right = false;
-}
-
 function releasePointerCapture() {
-  if (activePointerId !== null && canvas.hasPointerCapture(activePointerId)) {
-    canvas.releasePointerCapture(activePointerId);
-  }
-  activePointerId = null;
+  clearActivePointerCapture();
   clearDirection();
 }
 
