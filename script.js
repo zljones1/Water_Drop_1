@@ -177,6 +177,7 @@ function render() {
 
 function gameOver() {
   running = false;
+  drops = [];
   setFeedback(`Game over! Final score: ${score}. Press Start / Restart.`);
 }
 
