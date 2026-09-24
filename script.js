@@ -6,6 +6,8 @@ const livesEl = document.getElementById('lives');
 const speedEl = document.getElementById('speed');
 const feedbackEl = document.getElementById('feedback');
 const startBtn = document.getElementById('startBtn');
+const leftBtn = document.getElementById('leftBtn');
+const rightBtn = document.getElementById('rightBtn');
 
 const player = {
   x: canvas.width / 2 - 20,
@@ -24,6 +26,7 @@ let dropTimer = 0;
 let spawnEvery = 900;
 let lastFrame = 0;
 let animationId = null;
+let activePointerId = null;
 
 function resetGame() {
   if (animationId !== null) {
@@ -193,13 +196,12 @@ function handleKeyUp(e) {
   if (e.key === 'ArrowRight') keys.right = false;
 }
 
-window.addEventListener('keydown', handleKeyDown);
-window.addEventListener('keyup', handleKeyUp);
 canvas.addEventListener('keydown', handleKeyDown);
 canvas.addEventListener('keyup', handleKeyUp);
 
 canvas.addEventListener('pointerdown', (e) => {
   canvas.focus();
+  activePointerId = e.pointerId;
   canvas.setPointerCapture(e.pointerId);
   setDirectionFromPointer(e.clientX);
 });
@@ -208,23 +210,48 @@ canvas.addEventListener('pointermove', (e) => {
   if (e.buttons > 0) setDirectionFromPointer(e.clientX);
 });
 
-canvas.addEventListener('pointerup', () => {
+function clearDirection() {
   keys.left = false;
+  keys.right = false;
+}
+
+function releasePointerCapture(e) {
+  if (activePointerId !== null && canvas.hasPointerCapture(activePointerId)) {
+    canvas.releasePointerCapture(activePointerId);
+  }
+  activePointerId = null;
+  clearDirection();
+}
+
+canvas.addEventListener('pointerup', releasePointerCapture);
+canvas.addEventListener('pointercancel', releasePointerCapture);
+window.addEventListener('pointerup', clearDirection);
+window.addEventListener('pointercancel', clearDirection);
+
+function bindHoldButton(button, onStart) {
+  button.addEventListener('pointerdown', () => {
+    canvas.focus();
+    onStart();
+  });
+  const stop = () => clearDirection();
+  button.addEventListener('pointerup', stop);
+  button.addEventListener('pointercancel', stop);
+  button.addEventListener('pointerleave', stop);
+}
+
+bindHoldButton(leftBtn, () => {
+  keys.left = true;
   keys.right = false;
 });
 
-window.addEventListener('pointerup', () => {
+bindHoldButton(rightBtn, () => {
+  keys.right = true;
   keys.left = false;
-  keys.right = false;
-});
-
-window.addEventListener('pointercancel', () => {
-  keys.left = false;
-  keys.right = false;
 });
 
 startBtn.addEventListener('click', () => {
   lastFrame = performance.now();
+  canvas.focus();
   resetGame();
 });
 

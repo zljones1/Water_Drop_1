@@ -74,6 +74,22 @@ h1 {
   cursor: pointer;
 }
 
+.alt-controls {
+  margin-top: 0.6rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.alt-controls button {
+  padding: 0.55rem;
+  border: 2px solid #2f6aa6;
+  border-radius: 6px;
+  background: #eef5fc;
+  cursor: pointer;
+  font-weight: 700;
+}
+
 #feedback {
   margin: 0.7rem 0 0;
   min-height: 1.25rem;

@@ -34,7 +34,11 @@
 
       <section class="controls">
         <button id="startBtn" type="button">Start / Restart</button>
-        <p id="controlsText">Use ← / → keys or tap left/right half to move.</p>
+        <div class="alt-controls" aria-label="Accessible movement controls">
+          <button id="leftBtn" type="button">Move Left</button>
+          <button id="rightBtn" type="button">Move Right</button>
+        </div>
+        <p id="controlsText">Use ← / → keys, Move Left/Move Right buttons, or tap left/right half to move.</p>
         <p id="feedback" role="status" aria-live="polite"></p>
       </section>
     </main>
