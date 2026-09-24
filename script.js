@@ -248,7 +248,10 @@ canvas.addEventListener('pointermove', (e) => {
   }
 });
 
-function releasePointerCapture() {
+function releasePointerCapture(e) {
+  if (e.pointerId !== activePointerId) {
+    return;
+  }
   clearActivePointerCapture();
   clearDirection();
 }
@@ -257,7 +260,10 @@ canvas.addEventListener('pointerup', releasePointerCapture);
 canvas.addEventListener('pointercancel', releasePointerCapture);
 
 function bindHoldButton(button, onStart) {
-  button.addEventListener('pointerdown', () => {
+  button.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0 || !e.isPrimary) {
+      return;
+    }
     canvas.focus();
     onStart();
   });
